@@ -3,10 +3,8 @@ package epicode.BW5T1.model;
 import epicode.BW5T1.enumeration.TipoCliente;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 @Table(name = "clienti")
