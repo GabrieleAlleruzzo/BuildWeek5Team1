@@ -1,8 +1,8 @@
 package epicode.BW5T1.security;
-
-import it.epicode.U5W3D5.exception.NonTrovatoException;
-import it.epicode.U5W3D5.exception.UnAuthorizedException;
-import it.epicode.U5W3D5.model.Utente;
+import epicode.BW5T1.exception.UnAuthorizedException;
+import epicode.BW5T1.exception.ValidationException;
+import epicode.BW5T1.exception.NotFoundException;
+import epicode.BW5T1.model.Cliente;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(utente, null, utente.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-            catch (NonTrovatoException e){
+            catch (NotFoundException e){
                 throw new UnAuthorizedException("Utente non identificato");
             }
 

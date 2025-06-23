@@ -2,9 +2,9 @@ package epicode.BW5T1.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import it.epicode.U5W3D5.exception.NonTrovatoException;
-import it.epicode.U5W3D5.model.Utente;
-import it.epicode.U5W3D5.service.UtenteService;
+import epicode.BW5T1.exception.NotFoundException;
+import epicode.BW5T1.model.Cliente;
+import epicode.BW5T1.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -36,7 +36,7 @@ public class JwtTool {
                 build().parse(token);
     }
 
-    public Utente getUtenteFromToken(String token) throws NonTrovatoException {
+    public Utente getUtenteFromToken(String token) throws NotFoundException {
         int id = Integer.parseInt(Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).
                 build().parseSignedClaims(token).getPayload().getSubject());
 
