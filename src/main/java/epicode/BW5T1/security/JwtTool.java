@@ -1,10 +1,9 @@
 package epicode.BW5T1.security;
 
+import epicode.BW5T1.exception.NotFoundException;
+import epicode.BW5T1.model.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import it.epicode.U5W3D5.exception.NonTrovatoException;
-import it.epicode.U5W3D5.model.Utente;
-import it.epicode.U5W3D5.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -21,12 +20,12 @@ public class JwtTool {
     private String secret;
 
     @Autowired
-    private UtenteService userService;
+    private UserService userService;
 
-    public String createToken(Utente utente){
+    public String createToken(User user){
         return Jwts.builder().issuedAt(new Date()).
                 expiration(new Date(System.currentTimeMillis()+duration)).
-                subject(utente.getId()+"").
+                subject(user.getId()+"").
                 signWith(Keys.hmacShaKeyFor(secret.getBytes())).
                 compact();
     }
@@ -36,10 +35,10 @@ public class JwtTool {
                 build().parse(token);
     }
 
-    public Utente getUtenteFromToken(String token) throws NonTrovatoException {
+    public User getUtenteFromToken(String token) throws NotFoundException {
         int id = Integer.parseInt(Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).
                 build().parseSignedClaims(token).getPayload().getSubject());
 
-        return userService.getUtente(id);
+        return userService.getUser(id);
     }
 }
