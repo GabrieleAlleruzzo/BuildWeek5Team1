@@ -1,7 +1,7 @@
 package epicode.BW5T1.model;
 
 
-
+import model.Comune;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.ManyToOne;
