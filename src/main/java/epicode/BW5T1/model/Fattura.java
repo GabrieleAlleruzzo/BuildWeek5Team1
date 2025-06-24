@@ -16,7 +16,7 @@ public class Fattura {
     @GeneratedValue
     private int id;
     private LocalDate data;
-    private String importo; // BigDecimal sarebbe più adatto: il numero non viene visto come stringa.
+    private double importo; 
     private String numero;
 
     @Enumerated
