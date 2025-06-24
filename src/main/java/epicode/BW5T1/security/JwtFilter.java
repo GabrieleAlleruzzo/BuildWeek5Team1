@@ -1,4 +1,4 @@
-package epicode.BW5T1.security;
+package epicode.BW5T1.security..security;
 
 import it.epicode.U5W3D5.exception.NonTrovatoException;
 import it.epicode.U5W3D5.exception.UnAuthorizedException;
