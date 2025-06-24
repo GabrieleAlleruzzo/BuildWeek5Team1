@@ -1,5 +1,7 @@
 package epicode.BW5T1.dto;
 
+import epicode.BW5T1.model.Indirizzo;
+
 public class IndirizzoDto{
 
     private Long id;
