@@ -1,6 +1,6 @@
 package epicode.BW5T1.exception;
 
-import it.epicode.BEBW2_Team1.model.ApiError;
+import epicode.BW5T1.model.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
