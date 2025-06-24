@@ -1,16 +1,14 @@
 package epicode.BW5T1.model;
 
 import epicode.BW5T1.enumeration.StatoFattura;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
-
-@Data
 @Entity
+@Data
+@Table(name = "fatture")
+
 public class Fattura {
     @Id
     @GeneratedValue
@@ -22,6 +20,9 @@ public class Fattura {
     @Enumerated
     private StatoFattura statoFattura;
 
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
 
 
 }
