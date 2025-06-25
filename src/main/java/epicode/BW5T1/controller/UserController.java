@@ -25,7 +25,7 @@ public class UserController {
 
 
     @PostMapping("")
-    @PreAuthorize(("hasAuthority('ADMIN')"))
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
 
     public User saveUser (@RequestBody @Validated UserDto userDto, BindingResult bindingResult) throws NotFoundException, ValidationException {
@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER'")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public Page<User> getAllUser(@RequestParam(defaultValue = "0") int page,
                                          @RequestParam(defaultValue = "10") int size,
                                          @RequestParam(defaultValue = "id") String sortBy){
