@@ -13,6 +13,6 @@ public class Comune {
     private String nome;
 
     @ManyToOne
-    @JoinColumn(name = "comune_id", nullable = false)
+    @JoinColumn(name = "provincia_id", nullable = false)
     private Provincia provincia;
 }
