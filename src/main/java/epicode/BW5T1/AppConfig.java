@@ -9,11 +9,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Configuration
 @PropertySource("application.properties")//dove prendere le proprietà
@@ -30,7 +32,9 @@ public class AppConfig {
 
         return new Cloudinary(configCloudinary);
     }
-        
+
+
+
     @Bean(name = "provinceCsvFile")
     public File provinceCsvFile() {
         return new File("src/main/resources/province-italiane.csv");
