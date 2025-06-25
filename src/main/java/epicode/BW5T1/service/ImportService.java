@@ -6,6 +6,7 @@ import epicode.BW5T1.repository.ComuneRepository;
 import epicode.BW5T1.repository.ProvinciaRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -16,6 +17,11 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class ImportService {
+
+    @Autowired
+    private Comune comune;
+    @Autowired
+    private Provincia provincia;
 
     private final ProvinciaRepository provinciaRepository;
     private final ComuneRepository comuneRepository;
@@ -30,6 +36,10 @@ public class ImportService {
 
             String sigla = tokens[0].trim();
             String nome = tokens[1].trim();
+
+            if (!provinciaRepository.existsByProvincia(provincia.getId())) {
+                provinciaRepository.save(provincia);
+            }
 
             List<Provincia> province = provinciaRepository.findBySiglaAndNomeIgnoreCase(sigla, nome);
             if (province.isEmpty()) {
@@ -61,6 +71,9 @@ public class ImportService {
             if (provinceTrovate.size() > 1) {
                 System.err.println("Ambiguità: trovate più province con nome '" + nomeProvincia + "' per il comune '" + nomeComune + "'");
                 continue;
+            }
+            if (!comuneRepository.existsByComune(comune.getId())) {
+                comuneRepository.save(comune);
             }
 
             Provincia provincia = provinceTrovate.get(0);
