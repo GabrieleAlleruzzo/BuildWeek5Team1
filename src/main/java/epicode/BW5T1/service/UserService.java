@@ -11,6 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,7 +34,10 @@ public class UserService {
     @Autowired
     private Cloudinary cloudinary;
 
-    public User saveUser(UserDto userDto){
+    @Autowired
+    private JavaMailSenderImpl javaMailSender;
+
+    public User saveUser(UserDto userDto) {
         User user = new User();
         user.setNome(userDto.getNome());
         user.setCognome(userDto.getCognome());
@@ -42,7 +48,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Page<User> getAllUser(int page, int size, String sortBy){
+    public Page<User> getAllUser(int page, int size, String sortBy) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return userRepository.findAll(pageable);
     }
@@ -58,7 +64,7 @@ public class UserService {
         userDaAggiornare.setNome(userDto.getNome());
         userDaAggiornare.setCognome(userDto.getCognome());
         userDaAggiornare.setUsername(userDto.getUsername());
-        if(!passwordEncoder.matches(userDto.getPassword(), userDaAggiornare.getPassword())) {
+        if (!passwordEncoder.matches(userDto.getPassword(), userDaAggiornare.getPassword())) {
             userDaAggiornare.setPassword(passwordEncoder.encode(userDto.getPassword()));
         }
 
@@ -78,5 +84,14 @@ public class UserService {
         User userDaCancellare = getUser(id);
 
         userRepository.delete(userDaCancellare);
+    }
+
+    private void sendMail(String email) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Registrazione Servizio rest");
+        message.setText("Registrazione al servizio rest avvenuta con successo");
+
+        javaMailSender.send(message);
     }
 }
