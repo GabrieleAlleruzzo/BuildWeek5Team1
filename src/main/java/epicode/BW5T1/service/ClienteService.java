@@ -94,7 +94,7 @@ public class ClienteService {
 
 
     public Page<Cliente> getClientiOrderByRagioneSociale(Pageable pageable){
-        return clienteRepository.findAllOrderByRagioneSocialeAsc(pageable);
+        return clienteRepository.findAllByOrderByRagioneSocialeAsc(pageable);
 
     }
 

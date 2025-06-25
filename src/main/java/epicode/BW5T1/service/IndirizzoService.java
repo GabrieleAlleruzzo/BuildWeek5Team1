@@ -4,6 +4,7 @@ import epicode.BW5T1.dto.IndirizzoDto;
 import epicode.BW5T1.exception.NotFoundException;
 import epicode.BW5T1.model.Comune;
 import epicode.BW5T1.model.Indirizzo;
+import epicode.BW5T1.repository.ComuneRepository;
 import epicode.BW5T1.repository.IndirizzoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
