@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface ComuneRepository extends JpaRepository<Comune, Long> {
     Optional<Comune> findByNomeAndProvincia(String nome, Provincia provincia);
+
+    boolean existsByComune(Long id);
 }
