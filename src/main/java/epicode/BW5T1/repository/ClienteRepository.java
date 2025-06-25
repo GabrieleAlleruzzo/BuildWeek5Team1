@@ -13,7 +13,7 @@ public interface ClienteRepository  extends JpaRepository<Cliente, Integer>, Pag
 
 
 
-    Page<Cliente> findAllOrderByRagioneSocialeAsc(Pageable pageable);
+    Page<Cliente> findAllByOrderByRagioneSocialeAsc(Pageable pageable);
     Page<Cliente> findAllByOrderByFatturatoAnnualeDesc(Pageable pageable);
     Page<Cliente> findAllByOrderByDataInserimentoDesc(Pageable pageable);
     Page<Cliente> findAllByOrderByDataUltimoContattoDesc(Pageable pageable);
