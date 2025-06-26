@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrazione</title>
+  <style>
+    body { font-family: Arial; padding: 2em; background: #f9f9f9; }
+    form { background: white; padding: 2em; border-radius: 10px; width: 300px; margin: auto; }
+    input { display: block; margin-bottom: 1em; width: 100%; padding: 0.5em; }
+    button { padding: 0.7em; background: #007BFF; color: white; border: none; cursor: pointer; }
+    #message { margin-top: 1em; color: green; }
+    #error { margin-top: 1em; color: red; }
+  </style>
+</head>
+<body>
+
+<h2 style="text-align: center;">Registrati</h2>
+<form id="registerForm">
+  <input type="text" id="username" placeholder="Username" required />
+  <input type="email" id="email" placeholder="Email" required />
+  <input type="password" id="password" placeholder="Password" required />
+  <button type="submit">Registrati</button>
+  <div id="message"></div>
+  <div id="error"></div>
+</form>
+
+<script>
+  document.getElementById('registerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const payload = {
+      username: document.getElementById('username').value,
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value
+    };
+
+    try {
+      const response = await fetch('/auth/register', {  // <== COMBACIANTE CON IL TUO CONTROLLER
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.text();
+
+      if (response.ok) {
+        document.getElementById('message').textContent = "Registrazione avvenuta con successo";
+        document.getElementById('error').textContent = '';
+      } else {
+        document.getElementById('error').textContent = result;
+        document.getElementById('message').textContent = '';
+      }
+    } catch (err) {
+      document.getElementById('error').textContent = 'Errore nella richiesta.';
+    }
+  });
+</script>
+
+</body>
+</html>
