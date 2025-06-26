@@ -4,6 +4,7 @@ package epicode.BW5T1.service;
 import com.cloudinary.Cloudinary;
 import epicode.BW5T1.dto.ClienteDto;
 
+import epicode.BW5T1.enumeration.TipoIndirizzo;
 import epicode.BW5T1.exception.NotFoundException;
 import epicode.BW5T1.model.Cliente;
 import epicode.BW5T1.repository.ClienteRepository;
@@ -113,9 +114,11 @@ public class ClienteService {
 
     }
 
-//    public Page<Cliente> getClientiOrderByProvinciaSedeLegale(Pageable pageable) {
-//        return clienteRepository.findAllOrderByProvinciaSedeLegale(pageable);
-//    }
+
+    public Page<Cliente> getClientiOrderByProvinciaSedeLegale(Pageable pageable) {
+        return clienteRepository.findAllOrderByProvinciaSedeLegale(TipoIndirizzo.SEDE_LEGALE, pageable);
+    }
+
 
 
     public Page<Cliente> getClientiByFatturato(BigDecimal fatturato, Pageable pageable){

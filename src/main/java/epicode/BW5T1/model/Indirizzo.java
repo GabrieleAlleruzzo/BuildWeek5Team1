@@ -1,6 +1,7 @@
 package epicode.BW5T1.model;
 
 
+import epicode.BW5T1.enumeration.TipoIndirizzo;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.userdetails.User;
@@ -12,15 +13,16 @@ public class Indirizzo {
 
     private String via;
     private String civico;
-    private String localita;
     private String cap;
+    @Enumerated(EnumType.STRING)
+    private TipoIndirizzo tipoIndirizzo;
 
     @ManyToOne
-    @JoinColumn(name = "indirizzo_id_comune", nullable = false)
+    @JoinColumn(name = "idComune", nullable = false)
     private Comune comune;
 
     @ManyToOne
-    @JoinColumn(name = "indirizzo_id_cliente", nullable = false)
+    @JoinColumn(name = "idCliente", nullable = false)
     private Cliente cliente;
 
 

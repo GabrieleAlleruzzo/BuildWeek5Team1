@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping(path = "/clienti")
@@ -81,45 +82,78 @@ public class ClienteController {
 
     }
 
-//    @GetMapping("/order/fatturato")
-//    public Page<Cliente> getClientiOrederByFatturato(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return clienteService.getClientiOrderByFatturato(pageable);
-//    }
-//
-//    @GetMapping("/order/fatturato")
-//    public Page<Cliente> getClientiByRagioneSociale(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return clienteService.getClientiOrderByRagioneSociale(pageable);
-//    }
-//
-//    @GetMapping("/order/fatturato")
-//    public Page<Cliente> getClientiOrderDataInserimento(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return clienteService.getClientiOrderDataInserimento(pageable);
-//    }
-//
-//    @GetMapping("/order/fatturato")
-//    public Page<Cliente> getClientiOrderByDataUltimoContatto(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return clienteService.getClientiOrderByDataUltimoContatto(pageable);
-//    }
-//
-//    @GetMapping("/order/fatturato")
-//    public Page<Cliente> getClientiByFatturato(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return clienteService.getClientiByFatturato(fatturato,  pageable);
-//    }
+    @GetMapping("/order/ragione-sociale")
+    public Page<Cliente> getClientiOrderByRagioneSociale(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiOrderByRagioneSociale(pageable);
+    }
+
+    @GetMapping("/order/fatturato")
+    public Page<Cliente> getClientiOrderByFatturato(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiOrderByFatturato(pageable);
+    }
+
+    @GetMapping("/order/data-inserimento")
+    public Page<Cliente> getClientiOrderByDataInserimento(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiOrderDataInserimento(pageable);
+    }
+
+    @GetMapping("/order/data-ultimo-contatto")
+    public Page<Cliente> getClientiOrderByDataUltimoContatto(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiOrderByDataUltimoContatto(pageable);
+    }
+
+    @GetMapping("/ordina/provincia-sede-legale")
+    public Page<Cliente> getClientiOrdinatiPerProvincia(Pageable pageable) {
+        return clienteService.getClientiOrderByProvinciaSedeLegale(pageable);
+    }
+
+    @GetMapping("/filter/fatturato")
+    public Page<Cliente> getClientiByFatturato(
+            @RequestParam BigDecimal fatturato,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiByFatturato(fatturato, pageable);
+    }
+
+    @GetMapping("/filter/data-inserimento")
+    public Page<Cliente> getClientiByDataInserimento(
+            @RequestParam String data,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiByDataInserimento(LocalDate.parse(data), pageable);
+    }
+
+    @GetMapping("/filter/data-ultimo-contatto")
+    public Page<Cliente> getClientiByUltimoContatto(
+            @RequestParam String data,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiByUltimoContatto(LocalDate.parse(data), pageable);
+    }
+
+    @GetMapping("/search")
+    public Page<Cliente> searchClientiByRagioneSociale(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.searchClientiByRagioneSociale(keyword, pageable);
+    }
 
 
 
