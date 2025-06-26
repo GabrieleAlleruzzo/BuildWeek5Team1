@@ -9,6 +9,8 @@ import epicode.BW5T1.service.ClienteService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping(path = "/clienti")
@@ -26,7 +29,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PostMapping("")
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente saveCliente(@RequestBody @Validated ClienteDto clienteDto, BindingResult bindingResult)throws ValidationException, NotFoundException {
 
@@ -77,5 +80,52 @@ public class ClienteController {
 
 
     }
+
+//    @GetMapping("/order/fatturato")
+//    public Page<Cliente> getClientiOrederByFatturato(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return clienteService.getClientiOrderByFatturato(pageable);
+//    }
+//
+//    @GetMapping("/order/fatturato")
+//    public Page<Cliente> getClientiByRagioneSociale(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return clienteService.getClientiOrderByRagioneSociale(pageable);
+//    }
+//
+//    @GetMapping("/order/fatturato")
+//    public Page<Cliente> getClientiOrderDataInserimento(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return clienteService.getClientiOrderDataInserimento(pageable);
+//    }
+//
+//    @GetMapping("/order/fatturato")
+//    public Page<Cliente> getClientiOrderByDataUltimoContatto(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return clienteService.getClientiOrderByDataUltimoContatto(pageable);
+//    }
+//
+//    @GetMapping("/order/fatturato")
+//    public Page<Cliente> getClientiByFatturato(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return clienteService.getClientiByFatturato(fatturato,  pageable);
+//    }
+
+
+
+
+
+
+
 
 }

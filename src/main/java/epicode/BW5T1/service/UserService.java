@@ -11,6 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,20 +37,22 @@ public class UserService {
     @Autowired
     private Cloudinary cloudinary;
 
+    @Autowired
+    private JavaMailSenderImpl javaMailSender;
 
-    public User saveUser(UserDto userDto) {
+    public User saveUser(UserDto userDto){
         User user = new User();
         user.setNome(userDto.getNome());
         user.setCognome(userDto.getCognome());
         user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRuolo(Ruolo.USER);
-
 
         return userRepository.save(user);
     }
 
-    public Page<User> getAllUser(int page, int size, String sortBy) {
+    public Page<User> getAllUser(int page, int size, String sortBy){
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return userRepository.findAll(pageable);
     }
@@ -60,7 +68,8 @@ public class UserService {
         userDaAggiornare.setNome(userDto.getNome());
         userDaAggiornare.setCognome(userDto.getCognome());
         userDaAggiornare.setUsername(userDto.getUsername());
-        if (!passwordEncoder.matches(userDto.getPassword(), userDaAggiornare.getPassword())) {
+        userDaAggiornare.setEmail(userDto.getEmail());
+        if(!passwordEncoder.matches(userDto.getPassword(), userDaAggiornare.getPassword())) {
             userDaAggiornare.setPassword(passwordEncoder.encode(userDto.getPassword()));
         }
 
@@ -83,4 +92,25 @@ public class UserService {
     }
 
 
+    public void sendMail(String email, User currentUser) {
+////        if (currentUser.getRuolo() != Ruolo.ADMIN) {
+//            throw new RuntimeException("Non sei autorizzato a inviare email");
+//        }
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Registrazione Servizio rest");
+        message.setText("Registrazione al servizio rest avvenuta con successo");
+
+        javaMailSender.send(message);
+    }
+
+    public User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName(); // oppure getPrincipal() se hai un oggetto custom
+
+        return userRepository.findByUsername(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato"));
+    }
 }
+

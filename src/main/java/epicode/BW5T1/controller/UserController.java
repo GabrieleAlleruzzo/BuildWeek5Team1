@@ -38,7 +38,7 @@ public class UserController {
 
 
     @GetMapping("")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public Page<User> getAllUser(@RequestParam(defaultValue = "0") int page,
                                          @RequestParam(defaultValue = "10") int size,
                                          @RequestParam(defaultValue = "id") String sortBy){
@@ -67,5 +67,12 @@ public class UserController {
     @PatchMapping("/{id}")
     public String patchUser(@PathVariable int id,@RequestBody MultipartFile file) throws NotFoundException, IOException {
         return userService.patchUser(id, file);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/send-mail")
+    public ResponseEntity<?> sendMail(@RequestParam String email) {
+        userService.sendMail(email, userService.getAuthenticatedUser());
+        return ResponseEntity.ok("Email inviata");
     }
 }
