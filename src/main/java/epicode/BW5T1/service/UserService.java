@@ -34,8 +34,6 @@ public class UserService {
     @Autowired
     private Cloudinary cloudinary;
 
-    @Autowired
-    private JavaMailSenderImpl javaMailSender;
 
     public User saveUser(UserDto userDto) {
         User user = new User();
@@ -44,6 +42,7 @@ public class UserService {
         user.setUsername(userDto.getUsername());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRuolo(Ruolo.USER);
+
 
         return userRepository.save(user);
     }
@@ -86,12 +85,5 @@ public class UserService {
         userRepository.delete(userDaCancellare);
     }
 
-    private void sendMail(String email) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("Registrazione Servizio rest");
-        message.setText("Registrazione al servizio rest avvenuta con successo");
 
-        javaMailSender.send(message);
-    }
 }

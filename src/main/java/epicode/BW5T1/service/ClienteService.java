@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,10 +28,8 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-
     @Autowired
     private Cloudinary cloudinary;
-
 
     public Cliente saveCliente(ClienteDto clienteDto) {
         Cliente cliente = new Cliente();
@@ -144,8 +143,8 @@ public class ClienteService {
 
         return url;
 
-
     }
+
 
 }
 

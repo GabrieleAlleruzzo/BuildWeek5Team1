@@ -8,6 +8,7 @@ import epicode.BW5T1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +24,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
     @PostMapping("")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
@@ -35,6 +35,7 @@ public class UserController {
         }
         return userService.saveUser(userDto);
     }
+
 
     @GetMapping("")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")

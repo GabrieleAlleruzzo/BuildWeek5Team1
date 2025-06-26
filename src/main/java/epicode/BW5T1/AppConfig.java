@@ -1,8 +1,6 @@
 package epicode.BW5T1;
 
 import com.cloudinary.Cloudinary;
-
-
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
