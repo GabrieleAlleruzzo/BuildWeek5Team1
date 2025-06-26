@@ -1,5 +1,6 @@
 package epicode.BW5T1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@ToString(exclude = "comuni")
 public class Provincia {
     @Id
     @GeneratedValue
@@ -18,6 +20,7 @@ public class Provincia {
     private String nome;
     private String sigla;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "provincia")
     private Set<Comune> comuni ;
 
