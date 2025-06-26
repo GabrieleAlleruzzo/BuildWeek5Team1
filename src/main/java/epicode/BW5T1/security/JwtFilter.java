@@ -17,6 +17,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 
 @Component
@@ -32,10 +33,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String authorization = request.getHeader("Authorization");
 
-        if(authorization==null || !authorization.startsWith("Bearer ")){
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
             throw new UnAuthorizedException("Token non presente, non sei autorizzato ad usare il servizio richiesto");
-        }
-        else{
+        } else {
             //estraggo il token
             String token = authorization.substring(7);
 
@@ -50,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 //aggiungo l'autenticazione con l'utente nel contesto di Spring security
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }catch (NotFoundException e){
+            } catch (NotFoundException e) {
                 throw new UnAuthorizedException("Utente collegato al token non trovato");
             }
 
@@ -61,8 +61,18 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     //questo metodo evita che gli endpoint di registrazione e login possano richiedere il token
+    /*
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         return new AntPathMatcher().match("/auth/**", request.getServletPath());
+    } */
+
+    //ho cambiato il metodo shouldNotFilter per ospitare più path da non filtrare
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String[] excludedEndpoints = new String[]{"/auth/**", "/html/**"};
+
+        return Arrays.stream(excludedEndpoints)
+                .anyMatch(e -> new AntPathMatcher().match(e, request.getServletPath()));
     }
 }

@@ -1,19 +1,18 @@
 package epicode.BW5T1.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
-@Data
 @Entity
+@Data
 public class Comune {
     @Id
-    private String id;
+    @GeneratedValue
+    private Long id;
+
     private String nome;
 
     @ManyToOne
+    @JoinColumn(name = "provincia_id", nullable = false)
     private Provincia provincia;
-
-
 }
