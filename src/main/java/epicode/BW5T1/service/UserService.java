@@ -91,11 +91,11 @@ public class UserService {
         userRepository.delete(userDaCancellare);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+
     public void sendMail(String email, User currentUser) {
-        if (currentUser.getRuolo() != Ruolo.ADMIN) {
-            throw new RuntimeException("Non sei autorizzato a inviare email");
-        }
+////        if (currentUser.getRuolo() != Ruolo.ADMIN) {
+//            throw new RuntimeException("Non sei autorizzato a inviare email");
+//        }
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);

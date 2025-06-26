@@ -18,7 +18,7 @@ public interface ClienteRepository  extends JpaRepository<Cliente, Integer>, Pag
     Page<Cliente> findAllByOrderByFatturatoAnnualeDesc(Pageable pageable);
     Page<Cliente> findAllByOrderByDataInserimentoDesc(Pageable pageable);
     Page<Cliente> findAllByOrderByDataUltimoContattoDesc(Pageable pageable);
-//    @Query("SELECT c FROM Cliente c JOIN c.indirizzi i WHERE i.tipo = 'SEDE_LEGALE' ORDER BY i.provincia")
+//    @Query("SELECT c FROM Cliente c JOIN Indirizzo i WHERE i.tipo = 'SEDE_LEGALE' ORDER BY i.provincia.nome")
 //    Page<Cliente> findAllOrderByProvinciaSedeLegale(Pageable pageable);
 
     //inserire metodo per ordinare la  Provincia della sede legale (query).
