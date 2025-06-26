@@ -26,7 +26,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PostMapping("")
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente saveCliente(@RequestBody @Validated ClienteDto clienteDto, BindingResult bindingResult)throws ValidationException, NotFoundException {
 

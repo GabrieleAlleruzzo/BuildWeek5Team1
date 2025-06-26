@@ -8,6 +8,7 @@ import epicode.BW5T1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping("")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public Page<User> getAllUser(@RequestParam(defaultValue = "0") int page,
                                          @RequestParam(defaultValue = "10") int size,
                                          @RequestParam(defaultValue = "id") String sortBy){
@@ -66,5 +67,12 @@ public class UserController {
     @PatchMapping("/{id}")
     public String patchUser(@PathVariable int id,@RequestBody MultipartFile file) throws NotFoundException, IOException {
         return userService.patchUser(id, file);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/send-mail")
+    public ResponseEntity<?> sendMail(@RequestParam String email) {
+        userService.sendMail(email, userService.getAuthenticatedUser());
+        return ResponseEntity.ok("Email inviata");
     }
 }

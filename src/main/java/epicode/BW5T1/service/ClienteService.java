@@ -114,7 +114,9 @@ public class ClienteService {
 
     }
 
-    // metodo regione
+//    public Page<Cliente> getClientiOrderByProvinciaSedeLegale(Pageable pageable) {
+//        return clienteRepository.findAllOrderByProvinciaSedeLegale(pageable);
+//    }
 
 
     public Page<Cliente> getClientiByFatturato(BigDecimal fatturato, Pageable pageable){
