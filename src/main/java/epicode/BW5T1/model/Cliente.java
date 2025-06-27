@@ -14,6 +14,7 @@ import java.util.Set;
 @Entity
 @Data
 @ToString(exclude= {"indirizzi", "fatture"})
+
 public class Cliente {
     @Id
     @GeneratedValue
