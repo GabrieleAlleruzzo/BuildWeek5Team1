@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -119,32 +120,60 @@ public class ClienteController {
         return clienteService.getClientiOrderByProvinciaSedeLegale(pageable);
     }
 
+
     @GetMapping("/filter/fatturato")
     public Page<Cliente> getClientiByFatturato(
-            @RequestParam BigDecimal fatturato,
+            @RequestParam(required = false) String fatturato,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return clienteService.getClientiByFatturato(fatturato, pageable);
+        try {
+            if (fatturato == null || fatturato.trim().isEmpty()) {
+                Pageable pageable = PageRequest.of(page, size);
+                return clienteService.getAllClienti(page, size, "id");
+            }
+            BigDecimal valore = new BigDecimal(fatturato.replace(",", "."));
+            Pageable pageable = PageRequest.of(page, size);
+            return clienteService.getClientiByFatturato(valore, pageable);
+        } catch (NumberFormatException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Formato fatturato non valido. Utilizzare un numero valido (es: 1000.50 o 1000,50)");
+        }
     }
 
     @GetMapping("/filter/data-inserimento")
     public Page<Cliente> getClientiByDataInserimento(
-            @RequestParam String data,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return clienteService.getClientiByDataInserimento(LocalDate.parse(data), pageable);
+        @RequestParam(required = false) String data,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    
+    if (data == null) {
+        return clienteService.getAllClienti(page, size, "id");
     }
+    
+    Pageable pageable = PageRequest.of(page, size);
+    return clienteService.getClientiByDataInserimento(LocalDate.parse(data), pageable);
+}
 
     @GetMapping("/filter/data-ultimo-contatto")
     public Page<Cliente> getClientiByUltimoContatto(
-            @RequestParam String data,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return clienteService.getClientiByUltimoContatto(LocalDate.parse(data), pageable);
+        @RequestParam(required = false) String data,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    
+    Pageable pageable = PageRequest.of(page, size);
+    
+    if (data == null || data.trim().isEmpty()) {
+        return clienteService.getAllClienti(page, size, "id");
     }
+    
+    try {
+        LocalDate dataContatto = LocalDate.parse(data);
+        return clienteService.getClientiByUltimoContatto(dataContatto, pageable);
+    } catch (Exception e) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+            "Formato data non valido. Utilizzare il formato YYYY-MM-DD");
+    }
+}
 
     @GetMapping("/search")
     public Page<Cliente> searchClientiByRagioneSociale(
@@ -153,13 +182,4 @@ public class ClienteController {
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return clienteService.searchClientiByRagioneSociale(keyword, pageable);
-    }
-
-
-
-
-
-
-
-
-}
+    }}
