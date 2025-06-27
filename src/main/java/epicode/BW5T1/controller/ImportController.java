@@ -3,6 +3,7 @@ package epicode.BW5T1.controller;
 import epicode.BW5T1.service.ImportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ public class ImportController {
     private final ImportService importService;
 
     @PostMapping("/province")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> importaProvince(@RequestParam("file") MultipartFile file) {
         try {
             File tempFile = File.createTempFile("province", ".csv");
@@ -33,6 +35,7 @@ public class ImportController {
     }
 
     @PostMapping("/comuni")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> importaComuni(@RequestParam("file") MultipartFile file) {
         try {
             File tempFile = File.createTempFile("comuni", ".csv");
