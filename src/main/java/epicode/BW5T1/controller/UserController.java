@@ -1,5 +1,6 @@
 package epicode.BW5T1.controller;
 
+import epicode.BW5T1.dto.EmailDto;
 import epicode.BW5T1.dto.UserDto;
 import epicode.BW5T1.exception.NotFoundException;
 import epicode.BW5T1.exception.ValidationException;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -69,10 +71,17 @@ public class UserController {
         return userService.patchUser(id, file);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/send-mail")
-    public ResponseEntity<?> sendMail(@RequestParam String email) {
-        userService.sendMail(email, userService.getAuthenticatedUser());
-        return ResponseEntity.ok("Email inviata");
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String> sendMail(@RequestBody @Validated EmailDto dto, Authentication authentication) {
+        String mittenteAutenticato = authentication.getName();
+
+        if (!dto.getMittente().equalsIgnoreCase(mittenteAutenticato)) {
+            return ResponseEntity.status(403).body("Mittente non autorizzato.");
+        }
+
+        userService.send(dto.getMittente(), dto.getDestinatario(), "Messaggio da " + dto.getMittente(), dto.getMessaggio());
+        return ResponseEntity.ok("Email inviata con successo.");
     }
 }
+
