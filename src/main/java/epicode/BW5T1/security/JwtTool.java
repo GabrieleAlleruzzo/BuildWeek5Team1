@@ -2,6 +2,7 @@ package epicode.BW5T1.security;
 
 import epicode.BW5T1.exception.NotFoundException;
 import epicode.BW5T1.model.User;
+import epicode.BW5T1.service.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 

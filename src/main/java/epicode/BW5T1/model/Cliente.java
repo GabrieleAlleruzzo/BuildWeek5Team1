@@ -1,8 +1,11 @@
 package epicode.BW5T1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import epicode.BW5T1.enumeration.TipoCliente;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
@@ -10,6 +13,8 @@ import java.util.Set;
 @Table(name = "clienti")
 @Entity
 @Data
+@ToString(exclude= {"indirizzi", "fatture"})
+
 public class Cliente {
     @Id
     @GeneratedValue
@@ -32,9 +37,11 @@ public class Cliente {
     @Enumerated(EnumType.STRING)
     private TipoCliente tipoCliente; // PA, SAS, SPA, SRL
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private Set<Indirizzo> indirizzi ;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private Set<Fattura> fatture ;
 

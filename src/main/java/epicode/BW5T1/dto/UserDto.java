@@ -16,4 +16,5 @@ public class UserDto {
     private String username;
     @NotEmpty(message = "Obbligatorio inserire password")
     private String password;
+
 }
