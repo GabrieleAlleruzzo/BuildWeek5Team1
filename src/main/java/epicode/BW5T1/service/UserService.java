@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -38,7 +39,11 @@ public class UserService {
     private Cloudinary cloudinary;
 
     @Autowired
-    private JavaMailSenderImpl javaMailSender;
+    private JavaMailSender javaMailSender;
+
+    @Autowired
+    private MailService mailService;
+
 
     public User saveUser(UserDto userDto){
         User user = new User();
@@ -92,18 +97,11 @@ public class UserService {
     }
 
 
-    public void sendMail(String email, User currentUser) {
-////        if (currentUser.getRuolo() != Ruolo.ADMIN) {
-//            throw new RuntimeException("Non sei autorizzato a inviare email");
-//        }
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("Registrazione Servizio rest");
-        message.setText("Registrazione al servizio rest avvenuta con successo");
-
-        javaMailSender.send(message);
+    public void send(String mittente, String destinatario, String oggetto, String testo) {
+        mailService.send(mittente, destinatario, oggetto, testo);
     }
+
+
 
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
