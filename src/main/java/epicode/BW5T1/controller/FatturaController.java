@@ -50,7 +50,7 @@ public class FatturaController {
     }
 
     @GetMapping("/filter/stato")
-    public Page<Fattura> getFattureByStato(@RequestParam StatoFattura stato, Pageable pageable) {
+    public Page<Fattura> getFattureByStato(@RequestParam("stato") StatoFattura stato, Pageable pageable) {
         return fatturaService.getFattureByStato(stato, pageable);
     }
 
