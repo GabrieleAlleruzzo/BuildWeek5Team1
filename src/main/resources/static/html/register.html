@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrazione</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #2980b9, #6dd5fa);
+      height: 100vh;
+      display: flex;
+    }
+
+    form {
+      background: white;
+      padding: 2em;
+      border-radius: 10px;
+      width: 300px;
+      margin: auto;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    #message { margin-top: 1em; color: green; }
+    #error { margin-top: 1em; color: red; }
+  </style>
+</head>
+<body>
+
+<form id="registerForm">
+  <h2 style="text-align: center;">Registrati</h2>
+
+  <label for="nome">Nome</label>
+  <input type="text" id="nome" required />
+
+  <label for="cognome">Cognome</label>
+  <input type="text" id="cognome" required />
+
+  <label for="username">Username</label>
+  <input type="text" id="username" required />
+
+  <label for="email">Email</label>
+  <input type="email" id="email" required />
+
+  <label for="password">Password</label>
+  <input type="password" id="password" required />
+
+  <button type="submit">Registrati</button>
+  <div id="message"></div>
+  <div id="error"></div>
+</form>
+
+<script>
+  document.getElementById('registerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const payload = {
+      nome: document.getElementById('nome').value,
+      cognome: document.getElementById('cognome').value,
+      username: document.getElementById('username').value,
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value
+    };
+
+    try {
+      const response = await fetch('/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.text();
+
+      if (response.ok) {
+        document.getElementById('message').textContent = "Registrazione avvenuta con successo";
+        document.getElementById('error').textContent = '';
+      } else {
+        document.getElementById('error').textContent = result;
+        document.getElementById('message').textContent = '';
+      }
+    } catch (err) {
+      document.getElementById('error').textContent = 'Errore nella richiesta.';
+    }
+  });
+</script>
+
+<!-- link: http://localhost:8080/html/register.html -->
+</body>
+</html>

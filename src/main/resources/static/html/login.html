@@ -58,9 +58,9 @@
     </style>
     <script>
         async function inviaDati(){
-            let email = document.getElementById("email").value;
+            let username = document.getElementById("username").value;
             let password = document.getElementById("password").value;
-            console.log(email);
+            console.log(username);
             console.log(password);
 
             const url = "http://localhost:8080/auth/login";
@@ -71,7 +71,7 @@
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ "email": email, "password": password }),
+                    body: JSON.stringify({ "username": username, "password": password }),
                 });
 
                 const response = await fetch(request);
@@ -89,11 +89,13 @@
     </script>
 </head>
 <body>
-<div id="modulo">
-<label for="email">Email</label> <input id="email" name="email"><br>
+<div id="modulo"><h2 style="text-align: center;">Accedi</h2>
+
+<label for="username">Username</label> <input id="username" name="username"><br>
 <label for="password">Password</label> <input id="password" name="password"><br>
 <button onclick="inviaDati()">Login</button>
 </div>
 
+<!--link: http://localhost:8080/html/login.html -->
 </body>
 </html>

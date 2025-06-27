@@ -9,6 +9,8 @@ import epicode.BW5T1.service.ClienteService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping(path = "/clienti")
@@ -26,7 +30,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PostMapping("")
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente saveCliente(@RequestBody @Validated ClienteDto clienteDto, BindingResult bindingResult)throws ValidationException, NotFoundException {
 
@@ -77,5 +81,85 @@ public class ClienteController {
 
 
     }
+
+    @GetMapping("/order/ragione-sociale")
+    public Page<Cliente> getClientiOrderByRagioneSociale(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiOrderByRagioneSociale(pageable);
+    }
+
+    @GetMapping("/order/fatturato")
+    public Page<Cliente> getClientiOrderByFatturato(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiOrderByFatturato(pageable);
+    }
+
+    @GetMapping("/order/data-inserimento")
+    public Page<Cliente> getClientiOrderByDataInserimento(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiOrderDataInserimento(pageable);
+    }
+
+    @GetMapping("/order/data-ultimo-contatto")
+    public Page<Cliente> getClientiOrderByDataUltimoContatto(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiOrderByDataUltimoContatto(pageable);
+    }
+
+    @GetMapping("/ordina/provincia-sede-legale")
+    public Page<Cliente> getClientiOrdinatiPerProvincia(Pageable pageable) {
+        return clienteService.getClientiOrderByProvinciaSedeLegale(pageable);
+    }
+
+    @GetMapping("/filter/fatturato")
+    public Page<Cliente> getClientiByFatturato(
+            @RequestParam BigDecimal fatturato,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiByFatturato(fatturato, pageable);
+    }
+
+    @GetMapping("/filter/data-inserimento")
+    public Page<Cliente> getClientiByDataInserimento(
+            @RequestParam String data,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiByDataInserimento(LocalDate.parse(data), pageable);
+    }
+
+    @GetMapping("/filter/data-ultimo-contatto")
+    public Page<Cliente> getClientiByUltimoContatto(
+            @RequestParam String data,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.getClientiByUltimoContatto(LocalDate.parse(data), pageable);
+    }
+
+    @GetMapping("/search")
+    public Page<Cliente> searchClientiByRagioneSociale(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteService.searchClientiByRagioneSociale(keyword, pageable);
+    }
+
+
+
+
+
+
+
 
 }

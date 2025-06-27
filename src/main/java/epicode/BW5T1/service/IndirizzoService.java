@@ -2,9 +2,11 @@ package epicode.BW5T1.service;
 
 import epicode.BW5T1.dto.IndirizzoDto;
 import epicode.BW5T1.exception.NotFoundException;
+import epicode.BW5T1.model.Cliente;
 import epicode.BW5T1.model.Comune;
 import epicode.BW5T1.model.Indirizzo;
 import epicode.BW5T1.model.Provincia;
+import epicode.BW5T1.repository.ClienteRepository;
 import epicode.BW5T1.repository.ComuneRepository;
 import epicode.BW5T1.repository.IndirizzoRepository;
 import epicode.BW5T1.repository.ProvinciaRepository;
@@ -29,20 +31,33 @@ public class IndirizzoService {
     @Autowired
     private ProvinciaRepository provinciaRepository;
 
+    @Autowired
+    private ClienteRepository clienteRepository;
+
     private final Map<String, Provincia> provinciaCache = new HashMap<>();
 
     public Indirizzo saveIndirizzo(IndirizzoDto indirizzoDto) {
+
+        Cliente cliente = clienteRepository.findById(Math.toIntExact(indirizzoDto.getIdCliente()))
+                .orElseThrow(() -> new NotFoundException(
+                        "Cliente id %d non trovato".formatted(indirizzoDto.getIdCliente())));
         Comune comune = comuneRepository.findById(indirizzoDto.getIdComune()) // errore presente perché bisogna creare ComuneRepository
                 .orElseThrow(()-> new NotFoundException("Comune con id " + indirizzoDto.getIdComune() + " non trovato"));
 
+        System.out.println(cliente);
+        System.out.println(comune);
         Indirizzo indirizzo = new Indirizzo();
         indirizzo.setVia(indirizzoDto.getVia());
         indirizzo.setCivico(indirizzoDto.getCivico());
-        indirizzo.setLocalita(indirizzoDto.getLocalita());
         indirizzo.setCap(indirizzoDto.getCap());
+        indirizzo.setCliente(cliente);
         indirizzo.setComune(comune);
+        indirizzo.setTipoIndirizzo(indirizzoDto.getTipoIndirizzo());
+
+        System.out.println(indirizzo);
 
         return indirizzoRepository.save(indirizzo);
+
     }
 
     // paginazione (restituisce una porzione di indirizzi alla volta) + ordinamento (mette in ordine i risultati, per esempio per via o località)
@@ -64,9 +79,9 @@ public class IndirizzoService {
 
         indirizzo.setVia(indirizzoDto.getVia());
         indirizzo.setCivico(indirizzoDto.getCivico());
-        indirizzo.setLocalita(indirizzoDto.getLocalita());
         indirizzo.setCap(indirizzoDto.getCap());
         indirizzo.setComune(comune);
+        indirizzo.setTipoIndirizzo(indirizzoDto.getTipoIndirizzo());
 
         return indirizzoRepository.save(indirizzo);
     }
