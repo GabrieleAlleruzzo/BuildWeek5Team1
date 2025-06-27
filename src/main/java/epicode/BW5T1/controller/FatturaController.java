@@ -18,7 +18,7 @@ public class FatturaController {
     @Autowired
     private FatturaService fatturaService;
 
-    @PostMapping("/cliente/{clienteId}")
+    @PostMapping("/{clienteId}")
     public Fattura creaFattura(@RequestBody Fattura fattura, @PathVariable int clienteId) throws NotFoundException {
         return fatturaService.saveFattura(fattura, clienteId);
     }
